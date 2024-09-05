@@ -558,7 +558,7 @@ function initMap(isChina) {
         var isChina = locationData.country_code === 'CN';
         var ipInfoElement = document.getElementById('ip-info');
         if (isChina) {
-            ipInfoElement.textContent = `Your current IP is  ${data.ip}, located in China, and Google Maps is not displayed.`;
+            ipInfoElement.textContent = `Your current IP is  ${data.ip}, located in Chinese Mainland, and Google Maps is not displayed.`;
         } else {
             ipInfoElement.textContent = `Your current IP is  ${data.ip}, located in ${locationData.country_name}，and Google Maps is displayed.`;
         }
