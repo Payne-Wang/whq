@@ -572,13 +572,13 @@ function initMap(isChina) {
         initMap(isChina);
     }).fail(function() {
     console.error("Failed to get location data");
-    document.getElementById('ip-info').textContent = "无法获取位置信息，默认不显示地图。";
+    document.getElementById('ip-info').textContent = "Unable to retrieve your IP, the map will not be displayed by default";
     initMap(true);
     document.getElementById('map').style.border = 'none'; // 移除边框
 });
 }).fail(function() {
     console.error("Failed to get IP address");
-    document.getElementById('ip-info').textContent = "无法获取IP地址，默认不显示地图。";
+    document.getElementById('ip-info').textContent = "Unable to retrieve your IP, the map will not be displayed by default";
     initMap(true);
 });
         document.addEventListener('DOMContentLoaded', function() {
