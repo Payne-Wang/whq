@@ -1,0 +1,631 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Haiquan Wang - CV</title>
+	<script type="text/javascript" src="https://api.map.baidu.com/api?v=3.0&ak=PlhFWpA02aoURjAOpnWcRGqw7AI8EEyO"></script>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #f5f5f5;
+        }
+        h1, h2, h3 {
+            color: #2c3e50;
+        }
+        h1 {
+            border-bottom: 2px solid #3498db;
+            padding-bottom: 10px;
+        }
+        h2 {
+            border-bottom: 1px solid #bdc3c7;
+            padding-bottom: 5px;
+            margin-top: 30px;
+        }
+        .contact-info {
+            background-color: #ecf0f1;
+            padding: 15px;
+            border-radius: 5px;
+            margin-bottom: 20px;
+        }
+        .section {
+            background-color: white;
+            padding: 20px;
+            margin-bottom: 20px;
+            border-radius: 5px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+        ul {
+            padding-left: 20px;
+        }
+        .card {
+            background-color: white;
+            border-radius: 15px;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+            overflow: hidden;
+            margin-bottom: 20px;
+        }
+        .content {
+            display: flex;
+            flex-direction: column;
+            padding: 20px;
+        }
+        .image-container {
+            width: 100%;
+            margin-bottom: 20px;
+        }
+        .image-card {
+            width: 100%;
+            border-radius: 10px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+            overflow: hidden;
+            position: relative;
+        }
+        .image-wrapper {
+            width: 100%;
+            padding-top: 100%;
+            position: relative;
+            overflow: hidden;
+        }
+        .image {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            position: absolute;
+            top: 0;
+            left: 0;
+            opacity: 0;
+            transition: opacity 0.3s ease-in-out, transform 0.3s ease-in-out;
+            transform: scale(1);
+        }
+        .image.active {
+            opacity: 1;
+        }
+        .image-wrapper:hover .image.active {
+            transform: scale(1.05);
+        }
+        .image-slider {
+            height: 30px;
+            background-color: rgba(0,0,0,0.1);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        .slider-dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background-color: #fff;
+            margin: 0 5px;
+            cursor: pointer;
+            transition: background-color 0.3s ease-in-out;
+        }
+        .slider-dot.active {
+            background-color: #007bff;
+        }
+        .text-content {
+            flex: 1;
+        }
+        .profile-pic {
+            width: 150px;
+            height: 150px;
+            border-radius: 50%;
+            object-fit: cover;
+            margin: 0 auto 20px;
+            display: block;
+            border: 3px solid #3498db;
+        }
+        .education-card {
+            background-color: white;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+            padding: 20px;
+            margin-bottom: 20px;
+        }
+        .education-card h3 {
+            margin-top: 0;
+        }
+        .skills-wrapper {
+            overflow: hidden;
+            width: 100%;
+        }
+        .skills-container {
+            display: flex;
+            transition: transform 0.3s ease;
+            width: 150%;
+        }
+        .skill-card {
+            flex: 0 0 50%;
+            padding: 20px;
+            box-sizing: border-box;
+        }
+        .skills-navigation {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin-top: 20px;
+        }
+        .nav-button {
+            background: none;
+            border: none;
+            font-size: 24px;
+            cursor: pointer;
+            padding: 0 10px;
+        }
+        .skills-slider {
+            display: flex;
+            justify-content: center;
+            margin: 0 20px;
+        }
+        .skill-item {
+            margin-bottom: 15px;
+        }
+        .skill-name {
+            display: block;
+            margin-bottom: 5px;
+        }
+        .skill-bar {
+            background-color: #ecf0f1;
+            height: 10px;
+            border-radius: 5px;
+            overflow: hidden;
+        }
+        .skill-progress {
+            background-color: #3498db;
+            height: 100%;
+            border-radius: 5px;
+        }
+        .presentation-card {
+            display: flex;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+        .presentation-image {
+            width: 200px;
+            height: auto;
+            object-fit: cover;
+            border-radius: 5px;
+            margin-right: 15px;
+        }
+        .publication-link {
+            color: inherit;
+            text-decoration: none;
+        }
+        .publication-link:hover {
+            text-decoration: underline;
+        }
+        @media (min-width: 768px) {
+            .content {
+                flex-direction: row;
+            }
+            .image-container {
+                flex: 5;
+                margin-bottom: 0;
+                margin-right: 20px;
+            }
+            .text-content {
+                flex: 5;
+            }
+            .skills-container {
+                width: 150%;
+            }
+            .skill-card {
+                flex: 0 0 33.33%;
+            }
+        }
+        @media (max-width: 767px) {
+            .skills-container {
+                width: 300%;
+            }
+            .skill-card {
+                flex: 0 0 33.33%;
+            }
+        }
+		.contact-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: stretch;
+            margin-bottom: 20px;
+            height: 200px; /* 设置固定高度 */
+        }
+        .contact-info {
+            flex: 1.5;
+            background-color: #ecf0f1;
+            padding: 15px;
+            border-radius: 5px 0 0 5px;
+            margin-bottom: 0;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+        #map {
+            flex: 2;
+            height: 200px; /* 与容器高度相同 */
+            border-radius: 0 5px 5px 0;
+        }
+    </style>
+</head>
+<body>
+    <img src="https://mytuchuangwhq2.oss-cn-qingdao.aliyuncs.com/me.jpg" alt="Haiquan Wang" class="profile-pic">
+    <h1>Haiquan Wang, PhD</h1>
+    <p><strong>PostDoc in Morphology and Developmental Biology of the Endometrium</strong></p>
+
+    <div class="contact-container">
+        <div class="contact-info">
+            <p>Email: mg1835020@smail.nju.edu.cn</p>
+            <p>Phone: (+86) 19852812121</p>
+            <p>Address: Nanjing Medical University, Nanjing, Jiangsu 211166, China</p>
+        </div>
+        <div id="map"></div>
+    </div>
+
+    <div class="section">
+        <h2>Education</h2>
+        <div class="education-card">
+            <h3>PhD in Clinical Medicine</h3>
+            <p>Medical School, Nanjing University, 2020 - 2024</p>
+            <p>Research Direction: Endometrial cell dynamic changes and maternal-embryonic signal communications during early pregnancy</p>
+            <p>Supervisor: Professor Chaojun Li</p>
+        </div>
+        <div class="education-card">
+            <h3>MSc in Basic Medicine</h3>
+            <p>Medical School, Nanjing University, 2018 - 2020</p>
+            <p>Research Direction: Transcriptional reprogramming during spermatogenesis in humans and mice</p>
+            <p>Supervisor: Professor Chaojun Li</p>
+        </div>
+        <div class="education-card">
+            <h3>BSc in Biotechnology</h3>
+            <p>School of Life Sciences, Shandong Normal University, 2014 - 2018</p>
+            <p>Research Direction 1: Effects of environmental toxin polychlorinated biphenyl PCB118 in mouse reproductive system</p>
+            <p>Research Direction 2: Extraction and Preparation of Chlorogenic Acid (A compound found abundantly in coffee beans and known for its potent antioxidant properties)</p>
+            <p>Supervisor: Professor Shuzhen Liu, Professor Zenglan Wang</p>
+        </div>
+    </div>
+
+    <div class="section">
+        <h2>Research Experience</h2>
+        <h3>Highlight Research 1</h3>
+        <div class="card" tabindex="0">
+            <div class="content">
+                <div class="image-container">
+                    <div class="image-card">
+                        <div class="image-wrapper">
+                            <img class="image active" src="https://mytuchuangwhq2.oss-cn-qingdao.aliyuncs.com/RH1-1.jpeg" alt="Research Image 1">
+                            <img class="image" src="https://mytuchuangwhq2.oss-cn-qingdao.aliyuncs.com/RH1-2.jpeg" alt="Research Image 2">
+                            <img class="image" src="https://mytuchuangwhq2.oss-cn-qingdao.aliyuncs.com/RH1-3.jpeg" alt="Research Image 3">
+                        </div>
+                        <div class="image-slider">
+                            <div class="slider-dot active"></div>
+                            <div class="slider-dot"></div>
+                            <div class="slider-dot"></div>
+                        </div>
+                    </div>
+                </div>
+                <div class="text-content">
+                    <h3><a href="https://www.sciencedirect.com/science/article/abs/pii/S1534580723004008" class="publication-link" target="_blank">Maternal and embryonic signals cause functional differentiation of luminal epithelial cells and receptivity establishment</a></h3>
+                    <p>We found a conserved differentiation process of uterine luminal epithelium in humans and mice during early pregnancy, and proved that it can mediate maternal-embryonic communications to promote embryo implantation.</p>
+                    <div class="publications">Publication: Developmental Cell (2023)</div>
+                </div>
+            </div>
+        </div>
+
+        <h3>Highlight Research 2</h3>
+        <div class="card" tabindex="0">
+            <div class="content">
+                <div class="image-container">
+                    <div class="image-card">
+                        <div class="image-wrapper">
+                            <img class="image active" src="https://mytuchuangwhq2.oss-cn-qingdao.aliyuncs.com/RH2-1.jpeg" alt="Research Image 1">
+                            <img class="image" src="https://mytuchuangwhq2.oss-cn-qingdao.aliyuncs.com/RH2-2.jpeg" alt="Research Image 2">
+                            <img class="image" src="https://mytuchuangwhq2.oss-cn-qingdao.aliyuncs.com/RH2-3.jpeg" alt="Research Image 3">
+                        </div>
+                        <div class="image-slider">
+                            <div class="slider-dot active"></div>
+                            <div class="slider-dot"></div>
+                            <div class="slider-dot"></div>
+                        </div>
+                    </div>
+                </div>
+                <div class="text-content">
+                    <h3><a href="https://www.zoores.ac.cn/article/doi/10.24272/j.issn.2095-8137.2023.414" class="publication-link" target="_blank">The meiotic transcriptional reprogramming mediated by cell-cell communications in human and mice revealed by scATACseq and scRNAseq</a></h3>
+                    <p>We found a conserved meiotic reprogramming process in humans and mice, and proved that it is caused by the interactions between Sertoli cells and spermatogenic cells.</p>
+                    <div class="publications">Publication: Zoological Research (2024)</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="section">
+        <h2>Skills</h2>
+        <div class="skills-wrapper">
+            <div class="skills-container">
+                <div class="skill-card">
+                    <h3>Bioinformatics Skills</h3>
+                    <div class="skill-item">
+                        <span class="skill-name">Single-cell and bulk transcriptomics</span>
+                        <div class="skill-bar"><div class="skill-progress" style="width: 90%;"></div></div>
+                    </div>
+                    <div class="skill-item">
+                        <span class="skill-name">Spatial transcriptomics</span>
+                        <div class="skill-bar"><div class="skill-progress" style="width: 90%;"></div></div>
+                    </div>
+                    <div class="skill-item">
+                        <span class="skill-name">Single-cell and bulk ATACseq</span>
+                        <div class="skill-bar"><div class="skill-progress" style="width: 80%;"></div></div>
+                    </div>
+                    <div class="skill-item">
+                        <span class="skill-name">Genomics</span>
+                        <div class="skill-bar"><div class="skill-progress" style="width: 70%;"></div></div>
+                    </div>
+                    <div class="skill-item">
+                        <span class="skill-name">ChIP-seq</span>
+                        <div class="skill-bar"><div class="skill-progress" style="width: 60%;"></div></div>
+                    </div>
+                </div>
+                <div class="skill-card">
+                    <h3>Programming Languages</h3>
+                    <div class="skill-item">
+                        <span class="skill-name">R</span>
+                        <div class="skill-bar"><div class="skill-progress" style="width: 90%;"></div></div>
+                    </div>
+                    <div class="skill-item">
+                        <span class="skill-name">Python</span>
+                        <div class="skill-bar"><div class="skill-progress" style="width: 80%;"></div></div>
+                    </div>
+                    <div class="skill-item">
+                        <span class="skill-name">Linux and Shell</span>
+                        <div class="skill-bar"><div class="skill-progress" style="width: 70%;"></div></div>
+                    </div>
+                    <div class="skill-item">
+                        <span class="skill-name">HTML/Css/JavaScript</span>
+                        <div class="skill-bar"><div class="skill-progress" style="width: 60%;"></div></div>
+                    </div>
+                    <div class="skill-item">
+                        <span class="skill-name">MySQL</span>
+                        <div class="skill-bar"><div class="skill-progress" style="width: 50%"></div></div>
+                    </div>
+                </div>
+                <div class="skill-card">
+                    <h3>Academic Skills</h3>
+                    <div class="skill-item">
+                        <span class="skill-name">Scientific Writing</span>
+                        <div class="skill-bar"><div class="skill-progress" style="width: 90%;"></div></div>
+                    </div>
+                   <div class="skill-item">
+                        <span class="skill-name">Project Management</span>
+                        <div class="skill-bar"><div class="skill-progress" style="width: 80%;"></div></div>
+                    </div>
+                    <div class="skill-item">
+                        <span class="skill-name">Public Speaking</span>
+                        <div class="skill-bar"><div class="skill-progress" style="width: 60%;"></div></div>
+                    </div>
+                </div>
+                <div class="skill-card">
+                    <h3>Using AI</h3>
+                    <div class="skill-item">
+                        <span class="skill-name">ChatGPT prompt engineering</span>
+                        <div class="skill-bar"><div class="skill-progress" style="width: 95%;"></div></div>
+                    </div>
+                   <div class="skill-item">
+                        <span class="skill-name">Claude prompt engineering</span>
+                        <div class="skill-bar"><div class="skill-progress" style="width: 90%;"></div></div>
+                    </div>
+                    <div class="skill-item">
+                        <span class="skill-name">Gemini prompt engineering</span>
+                        <div class="skill-bar"><div class="skill-progress" style="width: 85%;"></div></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="skills-navigation">
+            <button class="nav-button prev">&lt;</button>
+            <div class="skills-slider">
+                <div class="slider-dot active"></div>
+                <div class="slider-dot"></div>
+            </div>
+            <button class="nav-button next">&gt;</button>
+        </div>
+    </div>
+
+    <div class="section">
+        <h2>Publications</h2>
+        <ol>
+            <li><a href="https://www.sciencedirect.com/science/article/abs/pii/S1534580723004008" class="publication-link" target="_blank"><strong>Wang, H.</strong>#, Liu, Y.#, Li, D.#, Liu, J.#, Jiang, Y.# et al. Maternal and embryonic signals cause functional differentiation of luminal epithelial cells and receptivity establishment. <strong>Developmental cell</strong>, 2023. <strong>IF=11.8</strong></a></li>
+            <div style="height: 1em;"></div>
+            <li><a href="https://www.sciencedirect.com/science/article/abs/pii/S209592732100181X?via%3Dihub" class="publication-link" target="_blank"><strong>Wang, H.</strong> & Li, C. The gate to metabolic crossroads. <strong>Science Bulletin</strong>, 2021. <strong>IF= 18.9</strong> <strong style="color: blue;">Research Highlight</strong></a></li>
+            <div style="height: 1em;"></div>
+            <li><a href="https://www.zoores.ac.cn/article/doi/10.24272/j.issn.2095-8137.2023.414" class="publication-link" target="_blank"><strong>Wang, H.</strong>#, Wu, X.#, Zhang, J.# et.al The meiotic transcriptional reprogramming mediated by cell-cell communications in human and mice revealed by single-cell ATACseq and scRNAseq. <strong>Zoological Research</strong>, 2024. <strong>IF=4.9</strong></a></li>
+            <div style="height: 1em;"></div>
+            <li><a href="http://www.cjcb.org/cjcb/Upload/volpdf/24-08-23-16-23-43-181.pdf" class="publication-link" target="_blank"><strong>Wang, H.</strong>#, Xiao, L.#, Sun, H.#, Li, C.# Progesterone Signaling and Endometrial Function. <strong>Chinese Journal of Cell Biology(中国细胞生物学报)</strong>, 2024. <strong style="color: blue;">Review</strong></a></li>
+            <div style="height: 1em;"></div>
+            <li><a href="https://journals.plos.org/plosone/article?id=10.1371/journal.pone.0283934" class="publication-link" target="_blank">Li, K., <strong>Wang, H.</strong>, Yang, C., Li, C., Xue, B. et al. Clinical implication and potential function of ARHGEF6 in acute myeloid leukemia: An in vitro study. <strong>PLoS One</strong>, 2023. <strong>IF=3.7</strong></a></li>
+            <div style="height: 1em;"></div>
+            <li><a href="https://www.nature.com/articles/s41467-023-36775-8" class="publication-link" target="_blank">Wu, J.#, Bu, D.#, <strong>Wang, H.</strong>, Shen, D., Chong, D. et al. The rhythmic coupling of Egr-1 and Cidea regulates age-related metabolic dysfunction in the liver of male mice. <strong>Nature Communications</strong>, 2023. <strong>IF=16.6</strong></a></li>
+            <div style="height: 1em;"></div>
+            <li><a href="https://www.jbc.org/article/S0021-9258(22)00258-7/fulltext" class="publication-link" target="_blank">Yang, C. F.#, Liu, W. W.#, <strong>Wang, H.</strong>, Zhang, J., Li, K. et al. Gonadal white adipose tissue is important for gametogenesis in mice through maintenance of local metabolic and immune niches. <strong>Journal of Biological Chemistry</strong>, 2022. <strong>IF=4.8</strong></a></li>
+            <div style="height: 1em;"></div>
+            <li><a href="https://www.sciencedirect.com/science/article/abs/pii/S1874391922002123" class="publication-link" target="_blank">Wu, J.#, Liu, H.#, <strong>Wang, H.</strong>, Wang, Y., Cheng, Q. et al. iTRAQ-based quantitative proteomic analysis of the liver regeneration termination phase after partial hepatectomy in mice. <strong>Journal of Proteomics</strong>, 2022. <strong>IF=3.3</strong></a></li>
+            <div style="height: 1em;"></div>
+            <li><a href="https://analyticalsciencejournals.onlinelibrary.wiley.com/doi/abs/10.1002/jat.3992" class="publication-link" target="_blank">He, Q.#, Lyu, T.#, Zhang, Y., <strong>Wang, H.</strong> et al. Effects of intrauterine exposure to 2,3',4,4',5-pentachlorobiphenyl on the reproductive system and sperm epigenetic imprinting of male offspring. <strong>Journal of Applied Toxicology</strong>, 2020. <strong>IF=3.3</strong></a></li>
+            <div style="height: 1em;"></div>
+            <li><a href="https://www.ncbi.nlm.nih.gov/pubmed/31388691" class="publication-link" target="_blank">He, Q.#, Wei X.#, Han, X., Zhou, Q., <strong>Wang, H.</strong> et al. Effects of 2,3',4,4'5-pentachlorobiphenyl exposure during pregnancy on epigenetic imprinting and maturation of offspring's oocytes in mice. <strong>Archives of Toxicology</strong>, 2019. <strong>IF=6.1</strong></a></li>
+            <div style="height: 1em;"></div>
+            <li><a href="https://www.ncbi.nlm.nih.gov/pubmed/38479452" class="publication-link" target="_blank">Zhang, T.#, Zhu, Y.#, Wang, X., Chong, D., <strong>Wang, H.</strong> et al. Characterization of protein lactylation in relation to cardiac metabolic reprogramming in neonatal mouse hearts. <strong>Journal of Genetics and Genomics</strong>, 2024. <strong>IF=5.9</strong></a></li>
+            <div style="height: 1em;"></div>
+            <li><a href="https://www.ncbi.nlm.nih.gov/pubmed/35283354" class="publication-link" target="_blank">Cheng, Q.#, Yuan, X.#, Lin, S., Zhao, Y., <strong>Wang, H.</strong> et al. Serum proteome profiling reveals differentially expressed proteins between subjects with metabolically healthy obesity and nonalcoholic fatty liver disease. <strong>Journal of Proteomics</strong>, 2022. <strong>IF=3.3</strong></a></li>
+            
+        </ol>
+    </div>
+
+    <div class="section">
+        <h2>Presentations</h2>
+        <div class="presentation-card">
+            <div>
+                <h3>Poster</h3>
+                <p>The meiotic transcriptional reprogramming mediated by cell-cell communications in human and mice revealed by single-cell ATACseq and scRNAseq</p>
+                <p>The 6th World Congress of Reproductive Biology, Beijing (2023)</p>
+            </div>
+        </div>
+    </div>
+
+    <div class="section">
+        <h2>Awards and Honors</h2>
+        <ul>
+            <li>China Optics Valley Scholarship, Nanjing University (2023)</li>
+            <li>First-Class Scholarship, Nanjing University (2018-2024)</li>
+            <li>National Scholarship, Shandong Normal University (2016)</li>
+            <li>First-Class Outstanding Student Scholarship, Shandong Normal University (2014-2018)</li>
+        </ul>
+    </div>
+
+    <script>
+		function initMap() {
+            var map = new BMap.Map("map");
+            var point = new BMap.Point(118.896338, 31.9459); // 南京大学江宁校区的经纬度
+            map.centerAndZoom(point, 15);
+            var marker = new BMap.Marker(point);
+            map.addOverlay(marker);
+            map.enableScrollWheelZoom(true);
+            
+            // 添加标签
+            var label = new BMap.Label("南京大学江宁校区", {offset: new BMap.Size(20, -10)});
+            marker.setLabel(label);
+        }
+
+        // 在页面加载完成后初始化地图
+        window.onload = function() {
+            initMap();
+        }
+        document.addEventListener('DOMContentLoaded', function() {
+            const cards = document.querySelectorAll('.card');
+            
+            cards.forEach(card => {
+                const dots = card.querySelectorAll('.slider-dot');
+                const images = card.querySelectorAll('.image');
+                const imageWrapper = card.querySelector('.image-wrapper');
+                let currentIndex = 0;
+
+                function setActiveImage(index) {
+                    dots.forEach(d => d.classList.remove('active'));
+                    images.forEach(img => img.classList.remove('active'));
+                    dots[index].classList.add('active');
+                    images[index].classList.add('active');
+                    currentIndex = index;
+                }
+
+                function nextImage() {
+                    let nextIndex = (currentIndex + 1) % images.length;
+                    setActiveImage(nextIndex);
+                }
+
+                function prevImage() {
+                    let prevIndex = (currentIndex - 1 + images.length) % images.length;
+                    setActiveImage(prevIndex);
+                }
+
+                dots.forEach((dot, index) => {
+                    dot.addEventListener('click', () => setActiveImage(index));
+                });
+
+                card.addEventListener('keydown', function(e) {
+                    if (e.key === 'ArrowRight') {
+                        nextImage();
+                    } else if (e.key === 'ArrowLeft') {
+                        prevImage();
+                    }
+                });
+
+                let startX;
+                imageWrapper.addEventListener('touchstart', function(e) {
+                    startX = e.touches[0].clientX;
+                });
+
+                imageWrapper.addEventListener('touchend', function(e) {
+                    const endX = e.changedTouches[0].clientX;
+                    const diff = startX - endX;
+                    if (Math.abs(diff) > 50) {
+                        if (diff > 0) {
+                            nextImage();
+                        } else {
+                            prevImage();
+                        }
+                    }
+                });
+
+                imageWrapper.addEventListener('mousedown', function(e) {
+                    startX = e.clientX;
+                });
+
+                imageWrapper.addEventListener('mouseup', function(e) {
+                    const endX = e.clientX;
+                    const diff = startX - endX;
+                    if (Math.abs(diff) > 50) {
+                        if (diff > 0) {
+                            nextImage();
+                        } else {
+                            prevImage();
+                        }
+                    }
+                });
+            });
+
+            const skillsContainer = document.querySelector('.skills-container');
+            const skillsDots = document.querySelectorAll('.skills-slider .slider-dot');
+            const prevButton = document.querySelector('.nav-button.prev');
+            const nextButton = document.querySelector('.nav-button.next');
+            let currentSkillIndex = 0;
+
+            function showSkills(index) {
+                const isMobile = window.innerWidth <= 767;
+                const offset = isMobile ? index * -33.33 : index * -66.66; // 移动端33.33%，桌面端66.66%
+                skillsContainer.style.transform = `translateX(${offset}%)`;
+                skillsDots.forEach((dot, i) => {
+                    dot.classList.toggle('active', i === index);
+                });
+                currentSkillIndex = index;
+
+                // 更新导航按钮状态
+                prevButton.style.visibility = index === 0 ? 'hidden' : 'visible';
+                nextButton.style.visibility = index === (isMobile ? 2 : 1) ? 'hidden' : 'visible';
+            }
+
+            skillsDots.forEach((dot, index) => {
+                dot.addEventListener('click', () => showSkills(index));
+            });
+
+            prevButton.addEventListener('click', () => {
+                if (currentSkillIndex > 0) showSkills(currentSkillIndex - 1);
+            });
+
+            nextButton.addEventListener('click', () => {
+                const maxIndex = window.innerWidth <= 767 ? 2 : 1;
+                if (currentSkillIndex < maxIndex) showSkills(currentSkillIndex + 1);
+            });
+
+            // 键盘导航支持
+            document.addEventListener('keydown', (e) => {
+                const maxIndex = window.innerWidth <= 767 ? 2 : 1;
+                if (e.key === 'ArrowLeft' && currentSkillIndex > 0) {
+                    showSkills(currentSkillIndex - 1);
+                } else if (e.key === 'ArrowRight' && currentSkillIndex < maxIndex) {
+                    showSkills(currentSkillIndex + 1);
+                }
+            });
+
+            // 初始化显示
+            showSkills(0);
+
+            // 窗口大小改变时重新初始化
+            window.addEventListener('resize', () => {
+                showSkills(0);
+            });
+        });
+    </script>
+</body>
+</html>
+
