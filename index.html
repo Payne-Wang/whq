@@ -486,14 +486,14 @@
     <script>
 		function initMap() {
             var map = new BMap.Map("map");
-            var point = new BMap.Point(118.896338, 31.9459); // 南京大学江宁校区的经纬度
+            var point = new BMap.Point(118.896338, 31.9459); // 南京医科大学江宁校区的经纬度
             map.centerAndZoom(point, 15);
             var marker = new BMap.Marker(point);
             map.addOverlay(marker);
             map.enableScrollWheelZoom(true);
             
             // 添加标签
-            var label = new BMap.Label("南京大学江宁校区", {offset: new BMap.Size(20, -10)});
+            var label = new BMap.Label("南京医科大学江宁校区", {offset: new BMap.Size(20, -10)});
             marker.setLabel(label);
         }
 
