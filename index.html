@@ -242,11 +242,14 @@
             display: flex;
             flex-direction: column;
             justify-content: center;
+            border: 1px solid grey; 
+            padding: 3px;
         }
         #map {
             flex: 2;
             height: 200px;
             border-radius: 0 5px 5px 0;
+            border: 1px solid grey;
         }
         .full-width {
             flex: 1;
@@ -275,7 +278,7 @@
         <p>Address: Nanjing Medical University, Nanjing, Jiangsu 211166, China</p>
     </div>
     <div id="map"></div>
-</div>
+    </div>
 <div id="ip-info" class="ip-info"></div>
 
     <div class="section">
@@ -560,7 +563,7 @@ function initMap(isChina) {
         if (isChina) {
             ipInfoElement.textContent = `Your current IP is  ${data.ip}, located in Chinese Mainland, and Google Maps is not displayed.`;
         } else {
-            ipInfoElement.textContent = `Your current IP is  ${data.ip}, located in ${locationData.country_name}，and Google Maps is displayed.`;
+            ipInfoElement.textContent = `Your current IP is  ${data.ip}, located in ${locationData.country_name},and Google Maps is displayed.`;
         }
         console.log("User is " + (isChina ? "" : "not ") + "from China");
         initMap(isChina);
