@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Haiquan Wang - CV</title>
+    <title>Hai-Quan Wang - CV</title>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <style>
         body {
@@ -231,13 +231,13 @@
             justify-content: space-between;
             align-items: stretch;
             margin-bottom: 20px;
-            height: 200px; /* 设置固定高度 */
+            height: 200px;
         }
         .contact-info {
-            flex: 1.5;
+            flex: 1;
             background-color: #ecf0f1;
             padding: 15px;
-            border-radius: 5px 0 0 5px;
+            border-radius: 5px;
             margin-bottom: 0;
             display: flex;
             flex-direction: column;
@@ -245,24 +245,38 @@
         }
         #map {
             flex: 2;
-            height: 200px; /* 与容器高度相同 */
+            height: 200px;
             border-radius: 0 5px 5px 0;
         }
+        .full-width {
+            flex: 1;
+            width: 100%;
+        }
+		.ip-info {
+    background-color: #f8f9fa;
+    border: 1px solid #dee2e6;
+    border-radius: 5px;
+    padding: 10px;
+    margin-bottom: 20px;
+    font-size: 14px;
+}
+
     </style>
 </head>
 <body>
     <img src="https://mytuchuangwhq2.oss-cn-qingdao.aliyuncs.com/me.jpg" alt="Haiquan Wang" class="profile-pic">
-    <h1>Haiquan Wang, PhD</h1>
+    <h1>Hai-Quan Wang, PhD</h1>
     <p><strong>PostDoc in Morphology and Developmental Biology of the Endometrium</strong></p>
 
     <div class="contact-container">
-        <div class="contact-info">
-            <p>Email: mg1835020@smail.nju.edu.cn</p>
-            <p>Phone: (+86) 25 8686 2618</p>
-            <p>Address: Nanjing Medical University, Nanjing, Jiangsu 211166, China</p>
-        </div>
-        <div id="map"></div>
+    <div id="contact-info" class="contact-info">
+        <p>Email: mg1835020@smail.nju.edu.cn</p>
+        <p>Phone: (+86) 25 8686 2618</p>
+        <p>Address: Nanjing Medical University, Nanjing, Jiangsu 211166, China</p>
     </div>
+    <div id="map"></div>
+</div>
+<div id="ip-info" class="ip-info"></div>
 
     <div class="section">
         <h2>Education</h2>
@@ -485,49 +499,81 @@
 
     <script>
 		function loadScript(url, callback) {
-            var script = document.createElement('script');
-            script.type = 'text/javascript';
-            script.src = url;
-            script.onload = callback;
-            document.head.appendChild(script);
-        }
+    var script = document.createElement('script');
+    script.type = 'text/javascript';
+    script.src = url;
+    script.onload = callback;
+    document.head.appendChild(script);
+}
 
-        function initMap(isChina) {
-            if (isChina) {
-                loadScript("https://api.map.baidu.com/api?v=3.0&ak=PlhFWpA02aoURjAOpnWcRGqw7AI8EEyO", function() {
-                    var map = new BMap.Map("map");
-                    var point = new BMap.Point(118.896338, 31.9459);
-                    map.centerAndZoom(point, 15);
-                    var marker = new BMap.Marker(point);
-                    map.addOverlay(marker);
-                    map.enableScrollWheelZoom(true);
-                    var label = new BMap.Label("南京医科大学江宁校区", {offset: new BMap.Size(20, -10)});
-                    marker.setLabel(label);
-                });
-            } else {
-                loadScript("https://maps.googleapis.com/maps/api/js?key=AIzaSyA7gi-FHFUmJ-mmeuCE1Qj4MmQGUiZanfI", function() {
-                    var nanjingMedical = {lat: 31.939162484703655, lng: 118.89109699663713};
-                    var map = new google.maps.Map(document.getElementById('map'), {
-                        zoom: 15,
-                        center: nanjingMedical
-                    });
-                    var marker = new google.maps.Marker({
-                        position: nanjingMedical,
-                        map: map,
-                        title: 'Nanjing Medical University'
-                    });
-                });
-            }
-        }
+function initMap(isChina) {
+    if (isChina) {
+        document.getElementById('contact-info').classList.add('full-width');
+        document.getElementById('map').style.display = 'none';
+    } else {
+        loadScript("https://maps.googleapis.com/maps/api/js?key=AIzaSyA7gi-FHFUmJ-mmeuCE1Qj4MmQGUiZanfI&language=en", function() {
+            var nanjingMedical = {lat: 31.939162484703655, lng: 118.89109699663713};
+            var map = new google.maps.Map(document.getElementById('map'), {
+                zoom: 15,
+                center: nanjingMedical,
+                disableDefaultUI: true, // Disable all default UI controls
+                zoomControl: false, // Disable zoom controls
+                mapTypeControl: true, // Enable map type control (Map/Satellite)
+                mapTypeControlOptions: {
+                    style: google.maps.MapTypeControlStyle.DROPDOWN_MENU,
+                    position: google.maps.ControlPosition.TOP_LEFT
+                },
+                fullscreenControl: true, // Enable fullscreen control
+                fullscreenControlOptions: {
+                    position: google.maps.ControlPosition.TOP_RIGHT
+                },
+                streetViewControl: false, // Disable street view control
+                scaleControl: false // Disable scale control
+            });
+            var marker = new google.maps.Marker({
+                position: nanjingMedical,
+                map: map,
+                title: 'Nanjing Medical University'
+            });
 
-        $.getJSON('https://ipapi.co/json/', function(data) {
-            var isChina = data.country_code === 'CN';
-            initMap(isChina);
-        }).fail(function() {
-            console.error("Failed to get location data");
-            // 如果获取位置失败，默认使用百度地图
-            initMap(true);
+            // Remove Google logo and terms link
+            var style = document.createElement('style');
+            style.textContent = `
+                .gmnoprint a, .gmnoprint span, .gm-style-cc {
+                    display: none;
+                }
+                .gmnoprint div {
+                    background: none !important;
+                }
+            `;
+            document.head.appendChild(style);
         });
+    }
+}
+
+        $.getJSON('https://api.ipify.org?format=json', function(data) {
+    console.log("User's IP address is: " + data.ip);
+    // 现在使用这个IP地址来获取地理位置信息
+    $.getJSON('https://ipapi.co/' + data.ip + '/json/', function(locationData) {
+        var isChina = locationData.country_code === 'CN';
+        var ipInfoElement = document.getElementById('ip-info');
+        if (isChina) {
+            ipInfoElement.textContent = `Your current IP is  ${data.ip}, located in China, and Google Maps is not displayed.`;
+        } else {
+            ipInfoElement.textContent = `Your current IP is  ${data.ip}, located in ${locationData.country_name}，and Google Maps is displayed.`;
+        }
+        console.log("User is " + (isChina ? "" : "not ") + "from China");
+        initMap(isChina);
+    }).fail(function() {
+        console.error("Failed to get location data");
+        document.getElementById('ip-info').textContent = "无法获取位置信息，默认不显示地图。";
+        initMap(true);
+    });
+}).fail(function() {
+    console.error("Failed to get IP address");
+    document.getElementById('ip-info').textContent = "无法获取IP地址，默认不显示地图。";
+    initMap(true);
+});
         document.addEventListener('DOMContentLoaded', function() {
             const cards = document.querySelectorAll('.card');
             
