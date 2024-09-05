@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Haiquan Wang - CV</title>
-	<script type="text/javascript" src="https://api.map.baidu.com/api?v=3.0&ak=PlhFWpA02aoURjAOpnWcRGqw7AI8EEyO"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <style>
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
@@ -484,23 +484,50 @@
     </div>
 
     <script>
-		function initMap() {
-            var map = new BMap.Map("map");
-            var point = new BMap.Point(118.896338, 31.9459); // 南京医科大学江宁校区的经纬度
-            map.centerAndZoom(point, 15);
-            var marker = new BMap.Marker(point);
-            map.addOverlay(marker);
-            map.enableScrollWheelZoom(true);
-            
-            // 添加标签
-            var label = new BMap.Label("南京医科大学江宁校区", {offset: new BMap.Size(20, -10)});
-            marker.setLabel(label);
+		function loadScript(url, callback) {
+            var script = document.createElement('script');
+            script.type = 'text/javascript';
+            script.src = url;
+            script.onload = callback;
+            document.head.appendChild(script);
         }
 
-        // 在页面加载完成后初始化地图
-        window.onload = function() {
-            initMap();
+        function initMap(isChina) {
+            if (isChina) {
+                loadScript("https://api.map.baidu.com/api?v=3.0&ak=PlhFWpA02aoURjAOpnWcRGqw7AI8EEyO", function() {
+                    var map = new BMap.Map("map");
+                    var point = new BMap.Point(118.896338, 31.9459);
+                    map.centerAndZoom(point, 15);
+                    var marker = new BMap.Marker(point);
+                    map.addOverlay(marker);
+                    map.enableScrollWheelZoom(true);
+                    var label = new BMap.Label("南京医科大学江宁校区", {offset: new BMap.Size(20, -10)});
+                    marker.setLabel(label);
+                });
+            } else {
+                loadScript("https://maps.googleapis.com/maps/api/js?key=AIzaSyA7gi-FHFUmJ-mmeuCE1Qj4MmQGUiZanfI", function() {
+                    var nanjingMedical = {lat: 31.9459, lng: 118.896338};
+                    var map = new google.maps.Map(document.getElementById('map'), {
+                        zoom: 15,
+                        center: nanjingMedical
+                    });
+                    var marker = new google.maps.Marker({
+                        position: nanjingMedical,
+                        map: map,
+                        title: 'Nanjing Medical University'
+                    });
+                });
+            }
         }
+
+        $.getJSON('https://ipapi.co/json/', function(data) {
+            var isChina = data.country_code === 'CN';
+            initMap(isChina);
+        }).fail(function() {
+            console.error("Failed to get location data");
+            // 如果获取位置失败，默认使用百度地图
+            initMap(true);
+        });
         document.addEventListener('DOMContentLoaded', function() {
             const cards = document.querySelectorAll('.card');
             
@@ -628,4 +655,3 @@
     </script>
 </body>
 </html>
-
