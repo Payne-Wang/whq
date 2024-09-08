@@ -570,29 +570,41 @@ function initMap(isChina) {
     }
 }
 
-        $.getJSON('https://api.ipify.org?format=json', function(data) {
-    console.log("User's IP address is: " + data.ip);
-    // 现在使用这个IP地址来获取地理位置信息
-    $.getJSON('https://ipapi.co/' + data.ip + '/json/', function(locationData) {
-        var isChina = locationData.country_code === 'CN';
-        var ipInfoElement = document.getElementById('ip-info');
-        if (isChina) {
-            ipInfoElement.textContent = `Your current IP is  ${data.ip}, located in Chinese Mainland, and Google Maps is not displayed.`;
-        } else {
-            ipInfoElement.textContent = `Your current IP is  ${data.ip}, located in ${locationData.country_name},and Google Maps is displayed.`;
-        }
-        console.log("User is " + (isChina ? "" : "not ") + "from China");
-        initMap(isChina);
-    }).fail(function() {
-    console.error("Failed to get location data");
-    document.getElementById('ip-info').textContent = "Unable to retrieve your IP, the map will not be displayed by default";
-    initMap(true);
-    document.getElementById('map').style.border = 'none'; // 移除边框
-});
-}).fail(function() {
-    console.error("Failed to get IP address");
-    document.getElementById('ip-info').textContent = "Unable to retrieve your IP, the map will not be displayed by default";
-    initMap(true);
+       $.ajax({
+    url: 'https://api.ipify.org?format=json',
+    dataType: 'json',
+    timeout: 5000, // 5秒超时
+    success: function(data) {
+        console.log("User's IP address is: " + data.ip);
+        // 现在使用这个IP地址来获取地理位置信息
+        $.ajax({
+            url: 'https://ipapi.co/' + data.ip + '/json/',
+            dataType: 'json',
+            timeout: 5000, // 5秒超时
+            success: function(locationData) {
+                var isChina = locationData.country_code === 'CN';
+                var ipInfoElement = document.getElementById('ip-info');
+                if (isChina) {
+                    ipInfoElement.textContent = `Your current IP is ${data.ip}, located in Chinese Mainland, and Google Maps is not displayed.`;
+                } else {
+                    ipInfoElement.textContent = `Your current IP is ${data.ip}, located in ${locationData.country_name}, and Google Maps is displayed.`;
+                }
+                console.log("User is " + (isChina ? "" : "not ") + "from China");
+                initMap(isChina);
+            },
+            error: function(jqXHR, textStatus, errorThrown) {
+                console.error("Failed to get location data");
+                document.getElementById('ip-info').textContent = "Unable to retrieve your IP, the map will not be displayed by default";
+                initMap(true);
+                document.getElementById('map').style.border = 'none'; // 移除边框
+            }
+        });
+    },
+    error: function(jqXHR, textStatus, errorThrown) {
+        console.error("Failed to get IP address");
+        document.getElementById('ip-info').textContent = "Unable to retrieve your IP, the map will not be displayed by default";
+        initMap(true);
+    }
 });
         document.addEventListener('DOMContentLoaded', function() {
             const cards = document.querySelectorAll('.card');
