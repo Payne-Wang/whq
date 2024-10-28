@@ -1,0 +1,734 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hai-Quan Wang - CV</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <style>
+        /* 基础样式 */
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            max-width: 1200px; /* 增加最大宽度以适应两栏布局 */
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #f5f5f5;
+        }
+        h1, h2, h3 {
+            color: #2c3e50;
+        }
+        h1 {
+            border-bottom: 2px solid #3498db;
+            padding-bottom: 10px;
+            text-align: center;
+        }
+        h2 {
+            border-bottom: 1px solid #bdc3c7;
+            padding-bottom: 5px;
+            margin-top: -10px;
+        }
+        .profile-pic {
+            width: 150px;
+            height: 150px;
+            border-radius: 50%;
+            object-fit: cover;
+            margin: 0 auto 20px;
+            display: block;
+            border: 3px solid #3498db;
+        }
+        /* 联系方式与地图容器 */
+        .contact-container {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-between;
+            align-items: stretch; /* 确保高度一致 */
+            margin-bottom: 20px;
+            height: 200px; /* 设置固定高度以保持一致 */
+        }
+        .contact-info {
+            flex: 1;
+            min-width: 250px;
+            background-color: #ecf0f1;
+            padding: 15px;
+            border-radius: 5px;
+            margin-right: 20px;
+            box-sizing: border-box;
+            border: 1px solid grey;
+            overflow: auto; /* 如果内容超出，允许滚动 */
+        }
+        #map {
+            flex: 1;
+            min-width: 250px;
+            height: 100%; /* 填满容器高度 */
+            border-radius: 5px;
+            display: none; /* 默认隐藏，动态显示 */
+            box-sizing: border-box;
+        }
+        .ip-info {
+            background-color: #f8f9fa;
+            border: 1px solid #dee2e6;
+            border-radius: 5px;
+            padding: 10px;
+            margin-bottom: 20px;
+            font-size: 14px;
+        }
+        /* 主容器和双栏布局 */
+        .main-container {
+            display: flex;
+            gap: 20px;
+            align-items: stretch; /* 确保左右栏高度一致 */
+            flex-wrap: wrap;
+        }
+        .left-column, .right-column {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            min-width: 300px; /* 防止内容过窄 */
+        }
+        /* Section 样式 */
+        .section {
+            background-color: white;
+            padding: 20px;
+            margin-bottom: 20px;
+            border-radius: 5px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+            flex: 1; /* 让每个section在列中均分空间 */
+            display: flex;
+            flex-direction: column;
+        }
+        ul {
+            padding-left: 20px;
+        }
+        /* Education 卡片样式 */
+        .education-card {
+            background-color: white;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+            padding: 20px;
+            margin-bottom: 20px;
+            position: relative;
+            display: flex;
+            flex-direction: column;
+        }
+        .education-card h3 {
+            margin-top: 0;
+        }
+        /* 研究经验 样式 */
+        .research-card {
+            display: flex;
+            flex-direction: column; /* 纵向排列 */
+            gap: 20px;
+            margin-bottom: 20px;
+        }
+        .research-card .image-container {
+			flex: none;
+			max-width: 60%;
+			margin: auto 20%;
+}
+        .research-card .image-card {
+            width: 100%;
+            border-radius: 10px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+            overflow: hidden;
+            position: relative;
+        }
+        .research-card .image-wrapper {
+            width: 100%;
+            padding-top: 100%; /* 1:1 比例，确保正方形 */
+            position: relative;
+            overflow: hidden;
+        }
+        .research-card .image {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            position: absolute;
+            top: 0;
+            left: 0;
+            opacity: 0;
+            transition: opacity 0.3s ease-in-out, transform 0.3s ease-in-out;
+            transform: scale(1);
+        }
+        .research-card .image.active {
+            opacity: 1;
+        }
+        .research-card .image-wrapper:hover .image.active {
+            transform: scale(1.05);
+        }
+        .research-card .image-slider {
+            height: 30px;
+            background-color: rgba(0,0,0,0.1);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        .research-card .slider-dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background-color: #fff;
+            margin: 0 5px;
+            cursor: pointer;
+            transition: background-color 0.3s ease-in-out;
+        }
+        .research-card .slider-dot.active {
+            background-color: #007bff;
+        }
+        .research-card .text-content {
+            flex: 1;
+        }
+        /* Skills 样式 */
+        .skills-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+        }
+        .skill-card {
+            background-color: white;
+            border-radius: 10px;
+            padding: 20px;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+        }
+        .skill-item {
+            margin-bottom: 15px;
+        }
+        .skill-name {
+            display: block;
+            margin-bottom: 5px;
+        }
+        .skill-bar {
+            background-color: #ecf0f1;
+            height: 10px;
+            border-radius: 5px;
+            overflow: hidden;
+        }
+        .skill-progress {
+            background-color: #3498db;
+            height: 100%;
+            border-radius: 5px;
+        }
+        /* Presentations 样式 */
+        .presentation-card {
+            display: flex;
+            flex-direction: column;
+            margin-bottom: 20px;
+        }
+        .presentation-card img.presentation-image {
+            width: 100%;
+            max-width: 200px; /* 限制图像最大宽度 */
+            height: auto;
+            object-fit: cover;
+            border-radius: 5px;
+            margin-bottom: 15px;
+        }
+        @media (min-width: 600px) {
+            .presentation-card {
+                flex-direction: row;
+                align-items: center;
+            }
+            .presentation-card img.presentation-image {
+                margin-right: 15px;
+                margin-bottom: 0;
+            }
+        }
+        /* Publications 链接样式 */
+        .publication-link {
+            color: inherit;
+            text-decoration: none;
+        }
+        .publication-link:hover {
+            text-decoration: underline;
+        }
+        /* 背景图样式 */
+        .background-image {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-size: contain;
+            background-repeat: no-repeat;
+            background-position: 75% center;
+            opacity: 0.1;
+            z-index: 0;
+        }
+        .nju .background-image {
+            background-image: url('https://upload.wikimedia.org/wikipedia/zh/f/fb/%E5%8D%97%E4%BA%AC%E5%A4%A7%E5%AD%A6%E6%A0%A1%E5%BE%BD.svg');
+        }
+        .sdnu .background-image {
+            background-image: url('https://upload.wikimedia.org/wikipedia/zh/thumb/0/06/Shandong_Normal_University_seal.svg/1200px-Shandong_Normal_University_seal.svg.png');
+        }
+        /* 响应式布局调整 */
+        @media (max-width: 991px) {
+            .contact-container {
+                flex-direction: column;
+                height: auto; /* 移动设备上取消固定高度 */
+            }
+            .contact-info {
+                margin-right: 0;
+                margin-bottom: 20px;
+            }
+            #map {
+                height: 200px; /* 固定高度 */
+            }
+            .skills-container {
+                grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            }
+            .research-card img.image {
+                max-height: 150px; /* 限制图像最大高度 */
+            }
+            .research-card {
+                flex-direction: column; /* 确保图文纵向排列 */
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- 个人照片 -->
+    <img src="https://mytuchuangwhq2.oss-cn-qingdao.aliyuncs.com/me.jpg" alt="Haiquan Wang" class="profile-pic">
+    <!-- 姓名与职位 -->
+    <h1>Hai-Quan Wang, PhD</h1>
+    <p style="text-align: center;"><strong>PostDoc in Morphology and Developmental Biology of the Endometrium</strong></p>
+
+    <!-- 联系方式与地图 -->
+    <div class="contact-container">
+        <div id="contact-info" class="contact-info">
+            <p><strong>Email:</strong> mg1835020@smail.nju.edu.cn</p>
+            <p><strong>Phone:</strong> (+86) 25 8686 2618</p>
+            <p><strong>Address:</strong> Nanjing Medical University, Nanjing, Jiangsu 211166, China</p>
+        </div>
+        <div id="map"></div>
+    </div>
+    <div id="ip-info" class="ip-info"></div>
+
+    <!-- 主容器：左栏和右栏 -->
+    <div class="main-container">
+        <!-- 左栏：教育、研究经验、技能 -->
+        <div class="left-column">
+            <!-- 教育经历 -->
+            <div class="section">
+                <h2>Education</h2>
+                <div class="education-card nju"> 
+                    <div class="card-content">
+                        <div class="background-image"></div>
+                        <div>
+                            <h3>PhD in Clinical Medicine</h3>
+                            <p>Medical School, Nanjing University, 2020 - 2024</p>
+                            <p>Research Direction: Endometrial cell dynamic changes and maternal-embryonic signal communications during early pregnancy</p>
+                            <p>Supervisor: Professor Chaojun Li</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="education-card nju">
+                    <div class="card-content">
+                        <div class="background-image"></div>
+                        <div>
+                            <h3>MSc in Basic Medicine</h3>
+                            <p>Medical School, Nanjing University, 2018 - 2020</p>
+                            <p>Research Direction: Transcriptional reprogramming and cell-cell communications during spermatogenesis in humans and mice</p>
+                            <p>Supervisor: Professor Chaojun Li</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="education-card sdnu">
+                    <div class="card-content">
+                        <div class="background-image"></div>
+                        <div>
+                            <h3>BSc in Biotechnology</h3>
+                            <p>School of Life Sciences, Shandong Normal University, 2014 - 2018</p>
+                            <p>Research Direction: I. Effects of environmental toxin polychlorinated biphenyl PCB118 in mouse reproductive system. II. Extraction and Preparation of Chlorogenic Acid.</p>
+                            <p>Supervisor: Professor Shuzhen Liu, Professor Zenglan Wang</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 研究经验 -->
+            <div class="section">
+                <h2>Research Highlights</h2>
+                <!-- 研究项目1 -->
+                <div class="research-card">
+                    <div class="image-container">
+                        <div class="image-card">
+                            <div class="image-wrapper">
+                                <img class="image active" src="https://mytuchuangwhq2.oss-cn-qingdao.aliyuncs.com/RH1-1.jpeg" alt="Research Image 1">
+                                <img class="image" src="https://mytuchuangwhq2.oss-cn-qingdao.aliyuncs.com/RH1-2.jpeg" alt="Research Image 2">
+                                <img class="image" src="https://mytuchuangwhq2.oss-cn-qingdao.aliyuncs.com/RH1-3.jpeg" alt="Research Image 3">
+                            </div>
+                            <div class="image-slider">
+                                <div class="slider-dot active"></div>
+                                <div class="slider-dot"></div>
+                                <div class="slider-dot"></div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="text-content">
+                        <h3><a href="https://www.sciencedirect.com/science/article/abs/pii/S1534580723004008" class="publication-link" target="_blank">Maternal and embryonic signals cause functional differentiation of luminal epithelial cells and receptivity establishment</a></h3>
+                        <p>We found a conserved differentiation process of uterine luminal epithelium in humans and mice during early pregnancy, and proved that it can mediate maternal-embryonic communications to promote embryo implantation.</p>
+                        <div class="publications"><strong>Publication:</strong> Developmental Cell (2023)</div>
+                    </div>
+                </div>
+
+                <!-- 研究项目2 -->
+                <div class="research-card">
+                    <div class="image-container">
+                        <div class="image-card">
+                            <div class="image-wrapper">
+                                <img class="image active" src="https://mytuchuangwhq2.oss-cn-qingdao.aliyuncs.com/RH2-1.jpeg" alt="Research Image 1">
+                                <img class="image" src="https://mytuchuangwhq2.oss-cn-qingdao.aliyuncs.com/RH2-2.jpeg" alt="Research Image 2">
+                                <img class="image" src="https://mytuchuangwhq2.oss-cn-qingdao.aliyuncs.com/RH2-3.jpeg" alt="Research Image 3">
+                            </div>
+                            <div class="image-slider">
+                                <div class="slider-dot active"></div>
+                                <div class="slider-dot"></div>
+                                <div class="slider-dot"></div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="text-content">
+                        <h3><a href="https://www.zoores.ac.cn/article/doi/10.24272/j.issn.2095-8137.2023.414" class="publication-link" target="_blank">The meiotic transcriptional reprogramming mediated by cell-cell communications in human and mice revealed by scATACseq and scRNAseq</a></h3>
+                        <p>We found a conserved meiotic reprogramming process in humans and mice, and proved that it is caused by the interactions between Sertoli cells and spermatogenic cells.</p>
+                        <div class="publications"><strong>Publication:</strong> Zoological Research (2024)</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 技能 -->
+            <div class="section">
+                <h2>Skills</h2>
+                <div class="skills-container">
+                    <!-- Bioinformatics Skills -->
+                    <div class="skill-card">
+                        <h3>Bioinformatics Skills</h3>
+                        <div class="skill-item">
+                            <span class="skill-name">Single-cell and bulk transcriptomics</span>
+                            <div class="skill-bar"><div class="skill-progress" style="width: 90%;"></div></div>
+                        </div>
+                        <div class="skill-item">
+                            <span class="skill-name">Spatial transcriptomics</span>
+                            <div class="skill-bar"><div class="skill-progress" style="width: 90%;"></div></div>
+                        </div>
+                        <div class="skill-item">
+                            <span class="skill-name">Single-cell and bulk ATACseq</span>
+                            <div class="skill-bar"><div class="skill-progress" style="width: 80%;"></div></div>
+                        </div>
+                        <div class="skill-item">
+                            <span class="skill-name">Genomics</span>
+                            <div class="skill-bar"><div class="skill-progress" style="width: 70%;"></div></div>
+                        </div>
+                        <div class="skill-item">
+                            <span class="skill-name">ChIP-seq</span>
+                            <div class="skill-bar"><div class="skill-progress" style="width: 60%;"></div></div>
+                        </div>
+                    </div>
+                    <!-- Programming Languages -->
+                    <div class="skill-card">
+                        <h3>Programming Languages</h3>
+                        <div class="skill-item">
+                            <span class="skill-name">R</span>
+                            <div class="skill-bar"><div class="skill-progress" style="width: 90%;"></div></div>
+                        </div>
+                        <div class="skill-item">
+                            <span class="skill-name">Python</span>
+                            <div class="skill-bar"><div class="skill-progress" style="width: 80%;"></div></div>
+                        </div>
+                        <div class="skill-item">
+                            <span class="skill-name">Linux and Shell</span>
+                            <div class="skill-bar"><div class="skill-progress" style="width: 70%;"></div></div>
+                        </div>
+                        <div class="skill-item">
+                            <span class="skill-name">HTML/Css/JavaScript</span>
+                            <div class="skill-bar"><div class="skill-progress" style="width: 60%;"></div></div>
+                        </div>
+                        <div class="skill-item">
+                            <span class="skill-name">MySQL</span>
+                            <div class="skill-bar"><div class="skill-progress" style="width: 50%"></div></div>
+                        </div>
+                    </div>
+                    <!-- Academic Skills -->
+                    <div class="skill-card">
+                        <h3>Academic Skills</h3>
+                        <div class="skill-item">
+                            <span class="skill-name">Scientific Writing</span>
+                            <div class="skill-bar"><div class="skill-progress" style="width: 90%;"></div></div>
+                        </div>
+                        <div class="skill-item">
+                            <span class="skill-name">Project Management</span>
+                            <div class="skill-bar"><div class="skill-progress" style="width: 80%;"></div></div>
+                        </div>
+                        <div class="skill-item">
+                            <span class="skill-name">Public Speaking</span>
+                            <div class="skill-bar"><div class="skill-progress" style="width: 60%;"></div></div>
+                        </div>
+                    </div>
+                    <!-- Using AI -->
+                    <div class="skill-card">
+                        <h3>Using AI</h3>
+                        <div class="skill-item">
+                            <span class="skill-name">ChatGPT prompt engineering</span>
+                            <div class="skill-bar"><div class="skill-progress" style="width: 95%;"></div></div>
+                        </div>
+                        <div class="skill-item">
+                            <span class="skill-name">Claude prompt engineering</span>
+                            <div class="skill-bar"><div class="skill-progress" style="width: 90%;"></div></div>
+                        </div>
+                        <div class="skill-item">
+                            <span class="skill-name">Gemini prompt engineering</span>
+                            <div class="skill-bar"><div class="skill-progress" style="width: 85%;"></div></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 右栏：出版物、演讲、奖项 -->
+        <div class="right-column">
+            <!-- 出版物 -->
+            <div class="section">
+                <h2>Publications</h2>
+                <p>Hashtag (#) denotes the Co-first Authors and Asterisk (*) denotes the Corresponding Authors.</p>
+                <ol>
+                    <li><a href="https://www.sciencedirect.com/science/article/abs/pii/S1534580723004008" class="publication-link" target="_blank"><strong>Wang, H.</strong>#, Liu, Y.#, Li, D.#, Liu, J.#, Jiang, Y.# et al. Maternal and embryonic signals cause functional differentiation of luminal epithelial cells and receptivity establishment. <strong>Developmental Cell</strong>, 2023. <strong>IF=11.8</strong></a></li>
+                    <div style="height: 1em;"></div>
+                    <li><a href="https://www.sciencedirect.com/science/article/abs/pii/S209592732100181X?via%3Dihub" class="publication-link" target="_blank"><strong>Wang, H.</strong> &amp; Li, C. The gate to metabolic crossroads. <strong>Science Bulletin</strong>, 2021. <strong>IF=18.9</strong> <strong style="color: blue;">Research Highlight</strong></a></li>
+                    <div style="height: 1em;"></div>
+                    <li><a href="https://www.zoores.ac.cn/article/doi/10.24272/j.issn.2095-8137.2023.414" class="publication-link" target="_blank"><strong>Wang, H.</strong>#, Wu, X.#, Zhang, J.# et.al The meiotic transcriptional reprogramming mediated by cell-cell communications in human and mice revealed by single-cell ATACseq and scRNAseq. <strong>Zoological Research</strong>, 2024. <strong>IF=4.9</strong></a></li>
+                    <div style="height: 1em;"></div>
+                    <li><a href="http://www.cjcb.org/cjcb/Upload/volpdf/24-08-23-16-23-43-181.pdf" class="publication-link" target="_blank"><strong>Wang, H.</strong>#, Xiao, L.#, Sun, H.*, Li, C.* Progesterone Signaling and Endometrial Function. <strong>Chinese Journal of Cell Biology (中国细胞生物学报)</strong>, 2024. <strong style="color: blue;">Review</strong></a></li>
+                    <div style="height: 1em;"></div>
+                    <li><a href="https://journals.plos.org/plosone/article?id=10.1371/journal.pone.0283934" class="publication-link" target="_blank">Li, K., <strong>Wang, H.</strong>, Yang, C., Li, C.*, Xue, B.* et al. Clinical implication and potential function of ARHGEF6 in acute myeloid leukemia: An in vitro study. <strong>PLoS One</strong>, 2023. <strong>IF=3.7</strong></a></li>
+                    <div style="height: 1em;"></div>
+                    <li><a href="https://www.nature.com/articles/s41467-023-36775-8" class="publication-link" target="_blank">Wu, J.#, Bu, D.#, <strong>Wang, H.</strong>, Shen, D., Chong, D. et al. The rhythmic coupling of Egr-1 and Cidea regulates age-related metabolic dysfunction in the liver of male mice. <strong>Nature Communications</strong>, 2023. <strong>IF=16.6</strong></a></li>
+                    <div style="height: 1em;"></div>
+                    <li><a href="https://www.jbc.org/article/S0021-9258(22)00258-7/fulltext" class="publication-link" target="_blank">Yang, C. F.#, Liu, W. W.#, <strong>Wang, H.</strong>, Zhang, J., Li, K. et al. Gonadal white adipose tissue is important for gametogenesis in mice through maintenance of local metabolic and immune niches. <strong>Journal of Biological Chemistry</strong>, 2022. <strong>IF=4.8</strong></a></li>
+                    <div style="height: 1em;"></div>
+                    <li><a href="https://www.sciencedirect.com/science/article/abs/pii/S1874391922002123" class="publication-link" target="_blank">Wu, J.#, Liu, H.#, <strong>Wang, H.</strong>, Wang, Y., Cheng, Q. et al. iTRAQ-based quantitative proteomic analysis of the liver regeneration termination phase after partial hepatectomy in mice. <strong>Journal of Proteomics</strong>, 2022. <strong>IF=3.3</strong></a></li>
+                    <div style="height: 1em;"></div>
+                    <li><a href="https://www.ncbi.nlm.nih.gov/pubmed/31388691" class="publication-link" target="_blank">He, Q.#, Wei X.#, Han, X., Zhou, Q., <strong>Wang, H.</strong> et al. Effects of 2,3',4,4'5-pentachlorobiphenyl exposure during pregnancy on epigenetic imprinting and maturation of offspring's oocytes in mice. <strong>Archives of Toxicology</strong>, 2019. <strong>IF=6.1</strong></a></li>
+                    <div style="height: 1em;"></div>
+                    <li><a href="https://www.ncbi.nlm.nih.gov/pubmed/38479452" class="publication-link" target="_blank">Zhang, T.#, Zhu, Y.#, Wang, X., Chong, D., <strong>Wang, H.</strong> et al. Characterization of protein lactylation in relation to cardiac metabolic reprogramming in neonatal mouse hearts. <strong>Journal of Genetics and Genomics</strong>, 2024. <strong>IF=5.9</strong></a></li>
+                    <div style="height: 1em;"></div>
+                    <li><a href="https://www.ncbi.nlm.nih.gov/pubmed/35283354" class="publication-link" target="_blank">Cheng, Q.#, Yuan, X.#, Lin, S., Zhao, Y., <strong>Wang, H.</strong> et al. Serum proteome profiling reveals differentially expressed proteins between subjects with metabolically healthy obesity and nonalcoholic fatty liver disease. <strong>Journal of Proteomics</strong>, 2022. <strong>IF=3.3</strong></a></li>
+                    <div style="height: 1em;"></div>
+                    <li><a href="https://www.ncbi.nlm.nih.gov/pubmed/33340314" class="publication-link" target="_blank">Sang, Y., Wang, Q., Zheng, F., Hua, Y., Wang, X., Zhang, J., Li, K., <strong>Wang, H.</strong> et al. Ggps1 deficiency in the uterus results in dystocia by disrupting uterine contraction. <strong>Journal of Molecular Cell Biology</strong>, 2021. <strong>IF=5.5</strong></a></li>
+                    <div style="height: 1em;"></div>
+                    <li><a href="https://www.ncbi.nlm.nih.gov/pubmed/36220812" class="publication-link" target="_blank">Chong, D., Gu, Y., Zhang, T., Xu, Y., Bu, D., Chen, Z., Xu, N., Li, L., Zhu, X., <strong>Wang, H.</strong> et al. Neonatal ketone body elevation regulates postnatal heart development by promoting cardiomyocyte mitochondrial maturation and metabolic reprogramming. <strong>Cell Discovery</strong>, 2022. <strong>IF=13</strong></a></li>
+                    <div style="height: 1em;"></div>
+                    <li><a href="https://www.ncbi.nlm.nih.gov/pubmed/37188792" class="publication-link" target="_blank">Liu, C., Zuo, W., Yan, G., Wang, S., Sun, S., Li, S., Tang, X., Li, Y., Cai, C., <strong>Wang, H.</strong> et al. Granulosa cell mevalonate pathway abnormalities contribute to oocyte meiotic defects and aneuploidy. <strong>Nature Aging</strong>, 2023. <strong>IF=16.6</strong></a></li>
+                    <div style="height: 1em;"></div>
+
+                    <li><a href="https://www.ncbi.nlm.nih.gov/pubmed/37611828" class="publication-link" target="_blank">Sang, Y., Yang, Q., Guo, Y., Liu, X., Shen, D., Jiang, C., Wang, X., Li, K., <strong>Wang, H.</strong> et al. Oocytes orchestrate protein prenylation for mitochondrial function through selective inactivation of cholesterol biosynthesis in murine species. <strong>Journal of Biological Chemistry</strong>, 2023. <strong>IF=4.8</strong></a></li>
+                    <div style="height: 1em;"></div>
+
+                    <li><a href="https://doi.org/10.1093/lifemeta/loac017" class="publication-link" target="_blank">Wang, X., Zhang, X., Sang, Y., Chong, D., Sheng, X., <strong>Wang, H.</strong> et al. The neonatal ketone body is important for primordial follicle pool formation and regulates ovarian ageing in mice. <strong>Life Metabolism</strong>, 2022. <strong>IF=N/A</strong></a></li>
+                </ol>
+            </div>
+
+            <!-- 演讲 -->
+            <div class="section">
+                <h2>Presentations</h2>
+                <div class="presentation-card">
+                    <!-- 如果有演讲图片，可以启用下面的img标签 -->
+                    <!-- <img src="presentation_image_url" alt="Presentation Image" class="presentation-image"> -->
+                    <div>
+                        <h3>Poster</h3>
+                        <p>The meiotic transcriptional reprogramming mediated by cell-cell communications in human and mice revealed by single-cell ATACseq and scRNAseq</p>
+                        <p>The 6th World Congress of Reproductive Biology, Beijing (2023)</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 奖项与荣誉 -->
+            <div class="section">
+                <h2>Awards and Honors</h2>
+                <ul>
+                    <li>China Optics Valley Scholarship, Nanjing University (2023)</li>
+                    <li>First-Class Scholarship, Nanjing University (2018-2024)</li>
+                    <li>National Scholarship, Shandong Normal University (2016)</li>
+                    <li>First-Class Outstanding Student Scholarship, Shandong Normal University (2014-2018)</li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- JavaScript 部分 -->
+        <script>
+            // 加载外部脚本的函数
+            function loadScript(url, callback) {
+                var script = document.createElement('script');
+                script.type = 'text/javascript';
+                script.src = url;
+                script.onload = callback;
+                document.head.appendChild(script);
+            }
+
+            // 初始化地图的函数
+            function initMap(isChina) {
+                if (isChina) {
+                    document.getElementById('map').style.display = 'none';
+                } else {
+                    document.getElementById('map').style.display = 'block';
+                    document.getElementById('map').style.border = '1px solid grey'; // 添加边框
+
+                    loadScript("https://maps.googleapis.com/maps/api/js?key=AIzaSyA7gi-FHFUmJ-mmeuCE1Qj4MmQGUiZanfI&language=en", function() {
+                        var nanjingMedical = {lat: 31.939162484703655, lng: 118.89109699663713};
+                        var map = new google.maps.Map(document.getElementById('map'), {
+                            zoom: 15,
+                            center: nanjingMedical,
+                            disableDefaultUI: true, // 禁用所有默认UI控件
+                            zoomControl: false, // 禁用缩放控件
+                            mapTypeControl: true, // 启用地图类型控件（地图/卫星）
+                            mapTypeControlOptions: {
+                                style: google.maps.MapTypeControlStyle.DROPDOWN_MENU,
+                                position: google.maps.ControlPosition.TOP_LEFT
+                            },
+                            fullscreenControl: true, // 启用全屏控件
+                            fullscreenControlOptions: {
+                                position: google.maps.ControlPosition.TOP_RIGHT
+                            },
+                            streetViewControl: false, // 禁用街景视图控件
+                            scaleControl: false // 禁用比例尺控件
+                        });
+                        var marker = new google.maps.Marker({
+                            position: nanjingMedical,
+                            map: map,
+                            title: 'Nanjing Medical University'
+                        });
+
+                        // 移除Google的商标和条款链接
+                        var style = document.createElement('style');
+                        style.textContent = `
+                            .gmnoprint a, .gmnoprint span, .gm-style-cc {
+                                display: none;
+                            }
+                            .gmnoprint div {
+                                background: none !important;
+                            }
+                        `;
+                        document.head.appendChild(style);
+                    });
+                }
+            }
+
+            // 获取IP并初始化地图
+            $.ajax({
+                url: 'https://api.ipify.org?format=json',
+                dataType: 'json',
+                timeout: 5000, // 5秒超时
+                success: function(data) {
+                    console.log("User's IP address is: " + data.ip);
+                    // 使用IP获取地理位置信息
+                    $.ajax({
+                        url: 'https://ipapi.co/' + data.ip + '/json/',
+                        dataType: 'json',
+                        timeout: 5000, // 5秒超时
+                        success: function(locationData) {
+                            var isChina = locationData.country_code === 'CN';
+                            var ipInfoElement = document.getElementById('ip-info');
+                            if (isChina) {
+                                ipInfoElement.textContent = `Your current IP is ${data.ip}, located in Chinese Mainland, and Google Maps is not displayed.`;
+                            } else {
+                                ipInfoElement.textContent = `Your current IP is ${data.ip}, located in ${locationData.country_name}, and Google Maps is displayed.`;
+                            }
+                            console.log("User is " + (isChina ? "" : "not ") + "from China");
+                            initMap(isChina);
+                        },
+                        error: function(jqXHR, textStatus, errorThrown) {
+                            console.error("Failed to get location data");
+                            document.getElementById('ip-info').textContent = "Unable to retrieve your IP, the map will not be displayed by default";
+                            initMap(true); // 默认隐藏地图
+                            document.getElementById('map').style.border = 'none'; // 移除边框
+                        }
+                    });
+                },
+                error: function(jqXHR, textStatus, errorThrown) {
+                    console.error("Failed to get IP address");
+                    document.getElementById('ip-info').textContent = "Unable to retrieve your IP, the map will not be displayed by default";
+                    initMap(true); // 默认隐藏地图
+                }
+            });
+
+            // 页面内容加载完成后初始化滑动和交互功能
+            document.addEventListener('DOMContentLoaded', function() {
+                // 初始化研究经验图片滑动功能
+                const researchCards = document.querySelectorAll('.research-card .image-card');
+                
+                researchCards.forEach(card => {
+                    const dots = card.querySelectorAll('.slider-dot');
+                    const images = card.querySelectorAll('.image');
+                    const imageWrapper = card.querySelector('.image-wrapper');
+                    let currentIndex = 0;
+
+                    function setActiveImage(index) {
+                        dots.forEach(d => d.classList.remove('active'));
+                        images.forEach(img => img.classList.remove('active'));
+                        dots[index].classList.add('active');
+                        images[index].classList.add('active');
+                        currentIndex = index;
+                    }
+
+                    function nextImage() {
+                        let nextIndex = (currentIndex + 1) % images.length;
+                        setActiveImage(nextIndex);
+                    }
+
+                    function prevImage() {
+                        let prevIndex = (currentIndex - 1 + images.length) % images.length;
+                        setActiveImage(prevIndex);
+                    }
+
+                    dots.forEach((dot, index) => {
+                        dot.addEventListener('click', () => setActiveImage(index));
+                    });
+
+                    card.addEventListener('keydown', function(e) {
+                        if (e.key === 'ArrowRight') {
+                            nextImage();
+                        } else if (e.key === 'ArrowLeft') {
+                            prevImage();
+                        }
+                    });
+
+                    let startX;
+                    imageWrapper.addEventListener('touchstart', function(e) {
+                        startX = e.touches[0].clientX;
+                    });
+
+                    imageWrapper.addEventListener('touchend', function(e) {
+                        const endX = e.changedTouches[0].clientX;
+                        const diff = startX - endX;
+                        if (Math.abs(diff) > 50) {
+                            if (diff > 0) {
+                                nextImage();
+                            } else {
+                                prevImage();
+                            }
+                        }
+                    });
+
+                    imageWrapper.addEventListener('mousedown', function(e) {
+                        startX = e.clientX;
+                    });
+
+                    imageWrapper.addEventListener('mouseup', function(e) {
+                        const endX = e.clientX;
+                        const diff = startX - endX;
+                        if (Math.abs(diff) > 50) {
+                            if (diff > 0) {
+                                nextImage();
+                            } else {
+                                prevImage();
+                            }
+                        }
+                    });
+                });
+
+                // Skills 部分不需要滑动，使用CSS Grid展示所有技能
+                // 确保所有技能都能显示
+
+                // 如果未来需要添加滑动功能，可以考虑重新集成
+            });
+        </script>
+</body>
+</html>
