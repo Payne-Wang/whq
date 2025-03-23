@@ -6,289 +6,11 @@
     <title>Hai-Quan Wang - CV</title>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" integrity="sha512-yH27NxKF1XUnk0C+yMqL3kNihkutjvXVH12JXd0/nmYCAtaqOe6+Avh2YFHMyyrDx3NlR0eKcY0R0DgOGPj9iw==" crossorigin="anonymous" referrerpolicy="no-referrer" />
-    <style>
-        /* 基础样式 */
-        body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            line-height: 1.6;
-            color: #333;
-            max-width: 1200px; /* 增加最大宽度以适应两栏布局 */
-            margin: 0 auto;
-            padding: 20px;
-            background-color: #f5f5f5;
-        }
-        h1, h2, h3 {
-            color: #2c3e50;
-        }
-        h1 {
-            border-bottom: 2px solid #3498db;
-            padding-bottom: 10px;
-            text-align: center;
-        }
-        h2 {
-            border-bottom: 1px solid #bdc3c7;
-            padding-bottom: 5px;
-            margin-top: -10px;
-        }
-        .profile-pic {
-            width: 150px;
-            height: 150px;
-            border-radius: 50%;
-            object-fit: cover;
-            margin: 0 auto 20px;
-            display: block;
-            border: 3px solid #3498db;
-        }
-        /* 联系方式与地图容器 */
-        .contact-container {
-            display: flex;
-            flex-wrap: wrap;
-            justify-content: space-between;
-            align-items: stretch; /* 确保高度一致 */
-            margin-bottom: 20px;
-            height: 220px; /* 设置固定高度以保持一致 */
-        }
-        .contact-info {
-            flex: 1;
-            min-width: 250px;
-            background-color: #ecf0f1;
-            padding: 15px;
-            border-radius: 5px;
-            margin-right: 20px;
-            box-sizing: border-box;
-            border: 1px solid grey;
-            overflow: auto; /* 如果内容超出，允许滚动 */
-        }
-        #map {
-            flex: 1;
-            min-width: 250px;
-            height: 100%; /* 填满容器高度 */
-            border-radius: 5px;
-            display: none; /* 默认隐藏，动态显示 */
-            box-sizing: border-box;
-        }
-        .ip-info {
-            background-color: #f8f9fa;
-            border: 1px solid #dee2e6;
-            border-radius: 5px;
-            padding: 10px;
-            margin-bottom: 20px;
-            font-size: 14px;
-        }
-        /* 主容器和双栏布局 */
-        .main-container {
-            display: flex;
-            gap: 20px;
-            align-items: stretch; /* 确保左右栏高度一致 */
-            flex-wrap: wrap;
-        }
-        .left-column, .right-column {
-            flex: 1;
-            display: flex;
-            flex-direction: column;
-            min-width: 300px; /* 防止内容过窄 */
-        }
-        /* Section 样式 */
-        .section {
-            background-color: white;
-            padding: 20px;
-            margin-bottom: 20px;
-            border-radius: 5px;
-            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
-            flex: 1; /* 让每个section在列中均分空间 */
-            display: flex;
-            flex-direction: column;
-        }
-        ul {
-            padding-left: 20px;
-        }
-        /* Education 卡片样式 */
-        .education-card {
-            background-color: white;
-            border-radius: 10px;
-            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
-            padding: 20px;
-            margin-bottom: 20px;
-            position: relative;
-            display: flex;
-            flex-direction: column;
-        }
-        .education-card h3 {
-            margin-top: 0;
-        }
-        /* 研究经验 样式 */
-        .research-card {
-            display: flex;
-            flex-direction: column; /* 纵向排列 */
-            gap: 20px;
-            margin-bottom: 20px;
-        }
-        .research-card .image-container {
-			flex: none;
-			max-width: 60%;
-			margin: auto 20%;
-}
-        .research-card .image-card {
-            width: 100%;
-            border-radius: 10px;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
-            overflow: hidden;
-            position: relative;
-        }
-        .research-card .image-wrapper {
-            width: 100%;
-            padding-top: 100%; /* 1:1 比例，确保正方形 */
-            position: relative;
-            overflow: hidden;
-        }
-        .research-card .image {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-            position: absolute;
-            top: 0;
-            left: 0;
-            opacity: 0;
-            transition: opacity 0.3s ease-in-out, transform 0.3s ease-in-out;
-            transform: scale(1);
-        }
-        .research-card .image.active {
-            opacity: 1;
-        }
-        .research-card .image-wrapper:hover .image.active {
-            transform: scale(1.05);
-        }
-        .research-card .image-slider {
-            height: 30px;
-            background-color: rgba(0,0,0,0.1);
-            display: flex;
-            justify-content: center;
-            align-items: center;
-        }
-        .research-card .slider-dot {
-            width: 8px;
-            height: 8px;
-            border-radius: 50%;
-            background-color: #fff;
-            margin: 0 5px;
-            cursor: pointer;
-            transition: background-color 0.3s ease-in-out;
-        }
-        .research-card .slider-dot.active {
-            background-color: #007bff;
-        }
-        .research-card .text-content {
-            flex: 1;
-        }
-        /* Skills 样式 */
-        .skills-container {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-            gap: 20px;
-        }
-        .skill-card {
-            background-color: white;
-            border-radius: 10px;
-            padding: 20px;
-            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
-        }
-        .skill-item {
-            margin-bottom: 15px;
-        }
-        .skill-name {
-            display: block;
-            margin-bottom: 5px;
-        }
-        .skill-bar {
-            background-color: #ecf0f1;
-            height: 10px;
-            border-radius: 5px;
-            overflow: hidden;
-        }
-        .skill-progress {
-            background-color: #3498db;
-            height: 100%;
-            border-radius: 5px;
-        }
-        /* Presentations 样式 */
-        .presentation-card {
-            display: flex;
-            flex-direction: column;
-            margin-bottom: 20px;
-        }
-        .presentation-card img.presentation-image {
-            width: 100%;
-            max-width: 200px; /* 限制图像最大宽度 */
-            height: auto;
-            object-fit: cover;
-            border-radius: 5px;
-            margin-bottom: 15px;
-        }
-        @media (min-width: 600px) {
-            .presentation-card {
-                flex-direction: row;
-                align-items: center;
-            }
-            .presentation-card img.presentation-image {
-                margin-right: 15px;
-                margin-bottom: 0;
-            }
-        }
-        /* Publications 链接样式 */
-        .publication-link {
-            color: inherit;
-            text-decoration: none;
-        }
-        .publication-link:hover {
-            text-decoration: underline;
-        }
-        /* 背景图样式 */
-        .background-image {
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background-size: contain;
-            background-repeat: no-repeat;
-            background-position: 95% center;
-            opacity: 0.1;
-            z-index: 0;
-        }
-        .nju .background-image {
-            background-image: url('https://mytuchuangwhq2.oss-cn-qingdao.aliyuncs.com/nju.png');
-        }
-        .sdnu .background-image {
-            background-image: url('https://mytuchuangwhq2.oss-cn-qingdao.aliyuncs.com/sdnu1.png');
-        }
-        /* 响应式布局调整 */
-        @media (max-width: 991px) {
-            .contact-container {
-                flex-direction: column;
-                height: auto; /* 移动设备上取消固定高度 */
-            }
-            .contact-info {
-                margin-right: 0;
-                margin-bottom: 20px;
-            }
-            #map {
-                height: 200px; /* 固定高度 */
-            }
-            .skills-container {
-                grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
-            }
-            .research-card img.image {
-                max-height: 150px; /* 限制图像最大高度 */
-            }
-            .research-card {
-                flex-direction: column; /* 确保图文纵向排列 */
-            }
-        }
-    </style>
+    <link rel="stylesheet" href="style.css">
 </head>
 <body>
     <!-- 个人照片 -->
-    <img src="https://mytuchuangwhq2.oss-cn-qingdao.aliyuncs.com/me.jpg" alt="Haiquan Wang" class="profile-pic">
+    <img src="images/me.jpg" alt="Haiquan Wang" class="profile-pic">
     <!-- 姓名与职位 -->
     <h1>Hai-Quan Wang, PhD</h1>
     <p style="text-align: center;"><strong>PostDoc in Morphology and Developmental Biology of the Endometrium</strong></p>
@@ -299,7 +21,7 @@
             <p><strong>Email:</strong> mg1835020@smail.nju.edu.cn</p>
             <p><strong>Phone:</strong> (+86) 25 8686 2618</p>
             <p><strong>Address:</strong> Nanjing Medical University, Nanjing, Jiangsu 211166, China</p>
-	    <p><strong>Google Scholar:</strong><a href="https://scholar.google.com.hk/citations?user=o2_GIKMAAAAJ" target="_blank">https://scholar.google.com.hk/citations?user=o2_GIKMAAAAJ</a></p>
+        <p><strong>Google Scholar:</strong> <a href="https://scholar.google.com.hk/citations?user=o2_GIKMAAAAJ" target="_blank"><i class="fa fa-graduation-cap" aria-hidden="true"></i> View Profile</a></p>
         </div>
         <div id="map"></div>
     </div>
@@ -314,7 +36,7 @@
                 <h2>Education</h2>
                 <div class="education-card nju"> 
                     <div class="card-content">
-                        <div class="background-image"></div>
+                            <div class="background-image" style="background-image: url('images/nju.png');"></div>
                         <div>
                             <h3>PhD in Clinical Medicine</h3>
                             <p>Medical School, Nanjing University, 2020 - 2024</p>
@@ -325,7 +47,7 @@
                 </div>
                 <div class="education-card nju">
                     <div class="card-content">
-                        <div class="background-image"></div>
+                            <div class="background-image" style="background-image: url('images/nju.png');"></div>
                         <div>
                             <h3>MSc in Basic Medicine</h3>
                             <p>Medical School, Nanjing University, 2018 - 2020</p>
@@ -355,9 +77,9 @@
                     <div class="image-container">
                         <div class="image-card">
                             <div class="image-wrapper">
-                                <img class="image active" src="https://mytuchuangwhq2.oss-cn-qingdao.aliyuncs.com/RH1-1.jpeg" alt="Research Image 1">
-                                <img class="image" src="https://mytuchuangwhq2.oss-cn-qingdao.aliyuncs.com/RH1-2.jpeg" alt="Research Image 2">
-                                <img class="image" src="https://mytuchuangwhq2.oss-cn-qingdao.aliyuncs.com/RH1-3.jpeg" alt="Research Image 3">
+                                <img class="image active" src="images/RH1-1.jpeg" alt="Research Image 1">
+                                <img class="image" src="images/RH1-2.jpeg" alt="Research Image 2">
+                                <img class="image" src="images/RH1-3.jpeg" alt="Research Image 3">
                             </div>
                             <div class="image-slider">
                                 <div class="slider-dot active"></div>
@@ -378,9 +100,9 @@
                     <div class="image-container">
                         <div class="image-card">
                             <div class="image-wrapper">
-                                <img class="image active" src="https://mytuchuangwhq2.oss-cn-qingdao.aliyuncs.com/RH2-1.jpeg" alt="Research Image 1">
-                                <img class="image" src="https://mytuchuangwhq2.oss-cn-qingdao.aliyuncs.com/RH2-2.jpeg" alt="Research Image 2">
-                                <img class="image" src="https://mytuchuangwhq2.oss-cn-qingdao.aliyuncs.com/RH2-3.jpeg" alt="Research Image 3">
+                                <img class="image active" src="images/RH2-1.jpeg" alt="Research Image 1">
+                                <img class="image" src="images/RH2-2.jpeg" alt="Research Image 2">
+                                <img class="image" src="images/RH2-3.jpeg" alt="Research Image 3">
                             </div>
                             <div class="image-slider">
                                 <div class="slider-dot active"></div>
@@ -565,183 +287,6 @@
 			</div>
         </div>
 
-        <!-- JavaScript 部分 -->
-        <script>
-            // 加载外部脚本的函数
-            function loadScript(url, callback) {
-                var script = document.createElement('script');
-                script.type = 'text/javascript';
-                script.src = url;
-                script.onload = callback;
-                document.head.appendChild(script);
-            }
-
-            // 初始化地图的函数
-            function initMap(isChina) {
-                if (isChina) {
-                    document.getElementById('map').style.display = 'none';
-                } else {
-                    document.getElementById('map').style.display = 'block';
-                    document.getElementById('map').style.border = '1px solid grey'; // 添加边框
-
-                    loadScript("https://maps.googleapis.com/maps/api/js?key=AIzaSyA7gi-FHFUmJ-mmeuCE1Qj4MmQGUiZanfI&language=en", function() {
-                        var nanjingMedical = {lat: 31.939162484703655, lng: 118.89109699663713};
-                        var map = new google.maps.Map(document.getElementById('map'), {
-                            zoom: 15,
-                            center: nanjingMedical,
-                            disableDefaultUI: true, // 禁用所有默认UI控件
-                            zoomControl: false, // 禁用缩放控件
-                            mapTypeControl: true, // 启用地图类型控件（地图/卫星）
-                            mapTypeControlOptions: {
-                                style: google.maps.MapTypeControlStyle.DROPDOWN_MENU,
-                                position: google.maps.ControlPosition.TOP_LEFT
-                            },
-                            fullscreenControl: true, // 启用全屏控件
-                            fullscreenControlOptions: {
-                                position: google.maps.ControlPosition.TOP_RIGHT
-                            },
-                            streetViewControl: false, // 禁用街景视图控件
-                            scaleControl: false // 禁用比例尺控件
-                        });
-                        var marker = new google.maps.Marker({
-                            position: nanjingMedical,
-                            map: map,
-                            title: 'Nanjing Medical University'
-                        });
-
-                        // 移除Google的商标和条款链接
-                        var style = document.createElement('style');
-                        style.textContent = `
-                            .gmnoprint a, .gmnoprint span, .gm-style-cc {
-                                display: none;
-                            }
-                            .gmnoprint div {
-                                background: none !important;
-                            }
-                        `;
-                        document.head.appendChild(style);
-                    });
-                }
-            }
-
-            // 获取IP并初始化地图
-            $.ajax({
-                url: 'https://api.ipify.org?format=json',
-                dataType: 'json',
-                timeout: 5000, // 5秒超时
-                success: function(data) {
-                    console.log("User's IP address is: " + data.ip);
-                    // 使用IP获取地理位置信息
-                    $.ajax({
-                        url: 'https://ipapi.co/' + data.ip + '/json/',
-                        dataType: 'json',
-                        timeout: 5000, // 5秒超时
-                        success: function(locationData) {
-                            var isChina = locationData.country_code === 'CN';
-                            var ipInfoElement = document.getElementById('ip-info');
-                            if (isChina) {
-                                ipInfoElement.textContent = `Your current IP is ${data.ip}, located in Chinese Mainland, and Google Maps is not displayed.`;
-                            } else {
-                                ipInfoElement.textContent = `Your current IP is ${data.ip}, located in ${locationData.country_name}, and Google Maps is displayed.`;
-                            }
-                            console.log("User is " + (isChina ? "" : "not ") + "from China");
-                            initMap(isChina);
-                        },
-                        error: function(jqXHR, textStatus, errorThrown) {
-                            console.error("Failed to get location data");
-                            document.getElementById('ip-info').textContent = "Unable to retrieve your IP, the map will not be displayed by default";
-                            initMap(true); // 默认隐藏地图
-                            document.getElementById('map').style.border = 'none'; // 移除边框
-                        }
-                    });
-                },
-                error: function(jqXHR, textStatus, errorThrown) {
-                    console.error("Failed to get IP address");
-                    document.getElementById('ip-info').textContent = "Unable to retrieve your IP, the map will not be displayed by default";
-                    initMap(true); // 默认隐藏地图
-                }
-            });
-
-            // 页面内容加载完成后初始化滑动和交互功能
-            document.addEventListener('DOMContentLoaded', function() {
-                // 初始化研究经验图片滑动功能
-                const researchCards = document.querySelectorAll('.research-card .image-card');
-                
-                researchCards.forEach(card => {
-                    const dots = card.querySelectorAll('.slider-dot');
-                    const images = card.querySelectorAll('.image');
-                    const imageWrapper = card.querySelector('.image-wrapper');
-                    let currentIndex = 0;
-
-                    function setActiveImage(index) {
-                        dots.forEach(d => d.classList.remove('active'));
-                        images.forEach(img => img.classList.remove('active'));
-                        dots[index].classList.add('active');
-                        images[index].classList.add('active');
-                        currentIndex = index;
-                    }
-
-                    function nextImage() {
-                        let nextIndex = (currentIndex + 1) % images.length;
-                        setActiveImage(nextIndex);
-                    }
-
-                    function prevImage() {
-                        let prevIndex = (currentIndex - 1 + images.length) % images.length;
-                        setActiveImage(prevIndex);
-                    }
-
-                    dots.forEach((dot, index) => {
-                        dot.addEventListener('click', () => setActiveImage(index));
-                    });
-
-                    card.addEventListener('keydown', function(e) {
-                        if (e.key === 'ArrowRight') {
-                            nextImage();
-                        } else if (e.key === 'ArrowLeft') {
-                            prevImage();
-                        }
-                    });
-
-                    let startX;
-                    imageWrapper.addEventListener('touchstart', function(e) {
-                        startX = e.touches[0].clientX;
-                    });
-
-                    imageWrapper.addEventListener('touchend', function(e) {
-                        const endX = e.changedTouches[0].clientX;
-                        const diff = startX - endX;
-                        if (Math.abs(diff) > 50) {
-                            if (diff > 0) {
-                                nextImage();
-                            } else {
-                                prevImage();
-                            }
-                        }
-                    });
-
-                    imageWrapper.addEventListener('mousedown', function(e) {
-                        startX = e.clientX;
-                    });
-
-                    imageWrapper.addEventListener('mouseup', function(e) {
-                        const endX = e.clientX;
-                        const diff = startX - endX;
-                        if (Math.abs(diff) > 50) {
-                            if (diff > 0) {
-                                nextImage();
-                            } else {
-                                prevImage();
-                            }
-                        }
-                    });
-                });
-
-                // Skills 部分不需要滑动，使用CSS Grid展示所有技能
-                // 确保所有技能都能显示
-
-                // 如果未来需要添加滑动功能，可以考虑重新集成
-            });
-        </script>
+        <script src="script.js"></script>
 </body>
 </html>
